@@ -293,7 +293,7 @@
 #define BANG_MAX 255 // limits current to nozzle while in bang-bang mode; 255=full current
 #define PID_MAX BANG_MAX // limits current to nozzle while PID is active (see PID_FUNCTIONAL_RANGE below); 255=full current
 #if ENABLED(PIDTEMP)
-  //#define PID_AUTOTUNE_MENU // Add PID Autotune to the LCD "Temperature" menu to run M303 and apply the result.
+  #define PID_AUTOTUNE_MENU // Add PID Autotune to the LCD "Temperature" menu to run M303 and apply the result.
   //#define PID_DEBUG // Sends debug data to the serial port.
   //#define PID_OPENLOOP 1 // Puts PID in open loop. M104/M140 sets the output power from 0 to PID_MAX
   //#define SLOW_PWM_HEATERS // PWM with very low frequency (roughly 0.125Hz=8s) and minimum state time of approximately 1s useful for heaters driven by a relay
@@ -306,9 +306,9 @@
   // If you are using a pre-configured hotend then you can use one of the value sets by uncommenting it
   
   // Prusa i3 w/ AluHotend
-  #define  DEFAULT_Kp 17.62
-  #define  DEFAULT_Ki 0.69
-  #define  DEFAULT_Kd 113.02
+  #define  DEFAULT_Kp 18.33
+  #define  DEFAULT_Ki 0.89
+  #define  DEFAULT_Kd 94.25
   
   // Ultimaker
   //#define  DEFAULT_Kp 22.2
@@ -360,9 +360,9 @@
   //#define  DEFAULT_bedKd 305.4
   
   //Custom Profile
-    #define  DEFAULT_bedKp 363.01
-    #define  DEFAULT_bedKi 50.59
-    #define  DEFAULT_bedKd 651.24
+    #define  DEFAULT_bedKp 342.79
+    #define  DEFAULT_bedKi 38.39
+    #define  DEFAULT_bedKd 765.19
 
   //120V 250W silicone heater into 4mm borosilicate (MendelMax 1.5+)
   //from pidautotune
@@ -491,14 +491,14 @@
  * Override with M92
  *                                      X, Y, Z, E0 [, E1[, E2[, E3[, E4]]]]
  */
-#define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 4000, 500 }
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { 200, 200, 8000, 1600 }
 
 /**
  * Default Max Feed Rate (mm/s)
  * Override with M203
  *                                      X, Y, Z, E0 [, E1[, E2[, E3[, E4]]]]
  */
-#define DEFAULT_MAX_FEEDRATE          { 300, 300, 5, 25 }
+#define DEFAULT_MAX_FEEDRATE          { 300, 300, 2, 25 }
 
 /**
  * Default Max Acceleration (change/s) change = mm/s
@@ -743,7 +743,8 @@
 #define Y_MIN_POS 0
 #define Z_MIN_POS 0
 #define X_MAX_POS 200
-#define Y_MAX_POS 194
+//#define Y_MAX_POS 194
+#define Y_MAX_POS 150
 #define Z_MAX_POS 300
 
 // If enabled, axes won't move below MIN_POS in response to movement commands.
