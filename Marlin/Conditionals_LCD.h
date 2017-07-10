@@ -34,7 +34,7 @@
     #define DOGLCD
     #define ULTIPANEL
     #define NEWPANEL
-    #define DEFAULT_LCD_CONTRAST 90
+    #define DEFAULT_LCD_CONTRAST 50
     #define LCD_CONTRAST_MIN 60
     #define LCD_CONTRAST_MAX 140
   #endif
@@ -267,10 +267,10 @@
         #define LCD_CONTRAST_MIN 0
       #endif
       #ifndef LCD_CONTRAST_MAX
-        #define LCD_CONTRAST_MAX 63
+        #define LCD_CONTRAST_MAX 255
       #endif
       #ifndef DEFAULT_LCD_CONTRAST
-        #define DEFAULT_LCD_CONTRAST 32
+        #define DEFAULT_LCD_CONTRAST 126
       #endif
     #endif
   #endif

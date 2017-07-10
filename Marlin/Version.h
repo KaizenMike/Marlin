@@ -26,6 +26,8 @@
  * directive USE_AUTOMATIC_VERSIONING.
  */
 
+//#include <Time.h>
+
 #if ENABLED(USE_AUTOMATIC_VERSIONING)
 
   #include "_Version.h"
@@ -35,7 +37,7 @@
   /**
    * Marlin release version identifier
    */
-  #define SHORT_BUILD_VERSION "1.1.0-1"
+  #define SHORT_BUILD_VERSION "1.1.0-PRUSADEV"
 
   /**
    * Verbose version identifier which should contain a reference to the location
@@ -48,6 +50,8 @@
    * here we define this default string as the date where the latest release
    * version was tagged.
    */
+
+  //const char compile_date[] = __DATE__ " " __TIME__;
   #define STRING_DISTRIBUTION_DATE "2017-05-04 12:00"
 
   /**

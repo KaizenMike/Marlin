@@ -489,7 +489,7 @@ void MarlinSettings::postprocess() {
     #endif
 
     #if !HAS_LCD_CONTRAST
-      const int lcd_contrast = 32;
+      const int lcd_contrast = 126;
     #endif
     EEPROM_WRITE(lcd_contrast);
 
