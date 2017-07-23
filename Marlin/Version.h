@@ -37,7 +37,7 @@
   /**
    * Marlin release version identifier
    */
-  #define SHORT_BUILD_VERSION "1.1.0-PRUSADEV"
+  #define SHORT_BUILD_VERSION "1.1.2"
 
   /**
    * Verbose version identifier which should contain a reference to the location
@@ -53,6 +53,7 @@
 
   //const char compile_date[] = __DATE__ " " __TIME__;
   #define STRING_DISTRIBUTION_DATE "2017-05-04 12:00"
+  #define STRING_DISTRIBUTION_DATE "2017-05-30 12:00"
 
   /**
    * Required minimum Configuration.h and Configuration_adv.h file versions.
