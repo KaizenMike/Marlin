@@ -127,7 +127,7 @@
 
 // Define this to set a unique identifier for this printer, (Used by some programs to differentiate between machines)
 // You can use an online service to generate a random UUID. (eg http://www.uuidgenerator.net/version4)
-//#define MACHINE_UUID "00000000-0000-0000-0000-0000000000003d3bea69-ae1c-438c-99ac-2ca56a2aa348"
+//#define MACHINE_UUID "3d3bea69-ae1c-438c-99ac-2ca56a2aa348"
 
 // @section extruder
 
@@ -660,7 +660,7 @@
  * disastrous consequences. Use with caution and do your homework.
  *
  */
-#define Z_MIN_PROBE_ENDSTOP
+//#define Z_MIN_PROBE_ENDSTOP
 
 /**
  * Probe Type
@@ -1320,7 +1320,7 @@
  *            https://github.com/olikraus/U8glib_Arduino
  */
 //#define ULTRA_LCD   // Character based
-#define DOGLCD      // Full graphics display
+//#define DOGLCD      // Full graphics display
 
 /**
  * SD CARD
