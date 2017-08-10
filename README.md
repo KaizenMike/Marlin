@@ -11,21 +11,26 @@ For complete Marlin documentation click over to the [Marlin Homepage <marlinfw.o
 
 This Release branch contains the latest tagged version of Marlin (currently 1.1.2 – May 2017).
 
-Previous releases of Marlin include [1.0.2-2](https://github.com/MarlinFirmware/Marlin/tree/1.0.2-2) (December 2016) and [1.0.1](https://github.com/MarlinFirmware/Marlin/tree/1.0.1) (December 2014). Any version of Marlin prior to 1.0.1 (when we started tagging versions) can be collectively referred to as Marlin 1.0.0.
+## Marlin 2.0 Bugfix Branch
 
 ## Contributing to Marlin
 
-Click on the [Issue Queue](https://github.com/MarlinFirmware/Marlin/issues) and [Pull Requests](https://github.com/MarlinFirmware/Marlin/pulls) links above at any time to see what we're currently working on.
+This branch is used to accumulate patches to the latest 2.0.x release version. Periodically this branch will form the basis for the next minor 2.0.x release.
 
-To submit patches and new features for Marlin 1.1 check out the [bugfix-1.1.x](https://github.com/MarlinFirmware/Marlin/tree/bugfix-1.1.x) branch, add your commits, and submit a Pull Request back to the `bugfix-1.1.x` branch. Periodically that branch will form the basis for the next minor release.
+Download earlier versions of Marlin on the [Releases page](https://github.com/MarlinFirmware/Marlin/releases).
 
-Note that our "bugfix" branch will always contain the latest patches to the current release version. These patches may not be widely tested. As always, when using "nightly" builds of Marlin, proceed with full caution.
+## Recent Changes
+- Add a Hardware Abstraction Layer (HAL) supporting current AVR platforms
+- Planning a HAL for Re:Arm
+- Planning a HAL for STM32
 
 ## Current Status: In Development
 
-Marlin development has reached an important milestone with its first stable release in over 2 years. During this period we focused on cleaning up the code and making it more modern, consistent, readable, and sensible.
+Proposed patches should be submitted as a Pull Request against this branch ([bugfix-2.0.x](https://github.com/MarlinFirmware/Marlin/tree/bugfix-2.0.x)).
 
-## Future Development
+- This branch is for fixing bugs and integrating any new features for the duration of the Marlin 2.0.x life-cycle.
+- Follow the [Coding Standards](http://marlinfw.org/docs/development/coding_standards.html) to gain points with the maintainers.
+- Please submit your questions and concerns to the [Issue Queue](https://github.com/MarlinFirmware/Marlin/issues).
 
 Marlin 1.1 is the last "flat" version of Marlin!
 
@@ -47,35 +52,8 @@ The current Marlin dev team consists of:
  - Roxanne Neufeld [[@Roxy-3D](https://github.com/Roxy-3D)] - English
  - Scott Lahteine [[@thinkyhead](https://github.com/thinkyhead)] - English
  - Bob Kuhn [[@Bob-the-Kuhn](https://github.com/Bob-the-Kuhn)] - English
- - Andreas Hardtung [[@AnHardt](https://github.com/AnHardt)] - Deutsch, English
- - Nico Tonnhofer [[@Wurstnase](https://github.com/Wurstnase)] - Deutsch, English
- - Jochen Groppe [[@CONSULitAS](https://github.com/CONSULitAS)] - Deutsch, English
+ - Chris Pepper [[@p3p](https://github.com/p3p)] - English
  - João Brazio [[@jbrazio](https://github.com/jbrazio)] - Portuguese, English
- - Bo Hermannsen [[@boelle](https://github.com/boelle)] - Danish, English
- - Bob Cousins [[@bobc](https://github.com/bobc)] - English
- - [[@maverikou](https://github.com/maverikou)]
- - Chris Palmer [[@nophead](https://github.com/nophead)]
- - [[@paclema](https://github.com/paclema)]
- - Erik van der Zalm [[@ErikZalm](https://github.com/ErikZalm)]
- - David Braam [[@daid](https://github.com/daid)]
- - Bernhard Kubicek [[@bkubicek](https://github.com/bkubicek)]
-
-More features have been added by:
- - Alberto Cotronei [[@MagoKimbra](https://github.com/MagoKimbra)] - English, Italian
- - Thomas Moore [[@tcm0116](https://github.com/tcm0116)]
- - Ernesto Martinez [[@emartinez167](https://github.com/emartinez167)]
- - Petr Zahradnik [[@clexpert](https://github.com/clexpert)]
- - Kai [[@Kaibob2](https://github.com/Kaibob2)]
- - Edward Patel [[@epatel](https://github.com/epatel)]
- - F. Malpartida [[@fmalpartida](https://github.com/fmalpartida)] - English, Spanish
- - [[@esenapaj](https://github.com/esenapaj)] - English, Japanese
- - [[@benlye](https://github.com/benlye)]
- - [[@Tannoo](https://github.com/Tannoo)]
- - [[@teemuatlut](https://github.com/teemuatlut)]
- - [[@bgort](https://github.com/bgort)]
- - Luc Van Daele[[@LVD-AC](https://github.com/LVD-AC)] - Dutch, French, English
- - [[@paulusjacobus](https://github.com/paulusjacobus)]
- - ...and many others
 
 ## License
 

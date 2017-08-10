@@ -251,7 +251,9 @@
 #include "cardreader.h"
 #include "configuration_store.h"
 #include "language.h"
-#include "pins_arduino.h"
+#ifdef ARDUINO
+  #include "pins_arduino.h"
+#endif
 #include "math.h"
 #include "nozzle.h"
 #include "duration_t.h"
@@ -275,10 +277,6 @@
   #include "buzzer.h"
 #endif
 
-#if ENABLED(USE_WATCHDOG)
-  #include "watchdog.h"
-#endif
-
 #if ENABLED(NEOPIXEL_RGBW_LED)
   #include <Adafruit_NeoPixel.h>
 #endif
@@ -293,7 +291,7 @@
 #endif
 
 #if HAS_SERVOS
-  #include "servo.h"
+  #include "src/HAL/servo.h"
 #endif
 
 #if HAS_DIGIPOTSS
@@ -313,7 +311,7 @@
 #endif
 
 #if ENABLED(ENDSTOP_INTERRUPTS_FEATURE)
-  #include "endstop_interrupts.h"
+  #include "src/HAL/HAL_endstop_interrupts.h"
 #endif
 
 #if ENABLED(M100_FREE_MEMORY_WATCHER)
@@ -649,7 +647,7 @@ float cartes[XYZ] = { 0 };
 static bool send_ok[BUFSIZE];
 
 #if HAS_SERVOS
-  Servo servo[NUM_SERVOS];
+  HAL_SERVO_LIB servo[NUM_SERVOS];
   #define MOVE_SERVO(I, P) servo[I].move(P)
   #if HAS_Z_SERVO_ENDSTOP
     #define DEPLOY_Z_SERVO() MOVE_SERVO(Z_ENDSTOP_SERVO_NR, z_servo_angle[0])
@@ -784,26 +782,6 @@ inline void sync_plan_position_e() { planner.set_e_position_mm(current_position[
   #define SYNC_PLAN_POSITION_KINEMATIC() sync_plan_position()
 
 #endif
-
-#if ENABLED(SDSUPPORT)
-  #include "SdFatUtil.h"
-  int freeMemory() { return SdFatUtil::FreeRam(); }
-#else
-extern "C" {
-  extern char __bss_end;
-  extern char __heap_start;
-  extern void* __brkval;
-
-  int freeMemory() {
-    int free_memory;
-    if ((int)__brkval == 0)
-      free_memory = ((int)&free_memory) - ((int)&__bss_end);
-    else
-      free_memory = ((int)&free_memory) - ((int)__brkval);
-    return free_memory;
-  }
-}
-#endif // !SDSUPPORT
 
 #if ENABLED(DIGIPOT_I2C)
   extern void digipot_i2c_set_current(uint8_t channel, float current);
@@ -6609,7 +6587,7 @@ inline void gcode_M42() {
 
     for (uint8_t pin = start; pin <= end; pin++) {
       //report_pin_state_extended(pin, I_flag, false);
-
+      if (!VALID_PIN(pin)) continue;
       if (!I_flag && pin_is_protected(pin)) {
         report_pin_state_extended(pin, I_flag, true, "Untouched ");
         SERIAL_EOL();
@@ -6835,14 +6813,15 @@ inline void gcode_M42() {
     // Watch until click, M108, or reset
     if (parser.boolval('W')) {
       SERIAL_PROTOCOLLNPGM("Watching pins");
-      byte pin_state[last_pin - first_pin + 1];
+      uint8_t pin_state[last_pin - first_pin + 1];
       for (int8_t pin = first_pin; pin <= last_pin; pin++) {
+        if (!VALID_PIN(pin)) continue;
         if (pin_is_protected(pin) && !ignore_protection) continue;
         pinMode(pin, INPUT_PULLUP);
         delay(1);
         /*
           if (IS_ANALOG(pin))
-            pin_state[pin - first_pin] = analogRead(pin - analogInputToDigitalPin(0)); // int16_t pin_state[...]
+            pin_state[pin - first_pin] = analogRead(DIGITAL_PIN_TO_ANALOG_PIN(pin)); // int16_t pin_state[...]
           else
         //*/
             pin_state[pin - first_pin] = digitalRead(pin);
@@ -6855,11 +6834,12 @@ inline void gcode_M42() {
 
       for (;;) {
         for (int8_t pin = first_pin; pin <= last_pin; pin++) {
+          if (!VALID_PIN(pin)) continue;
           if (pin_is_protected(pin) && !ignore_protection) continue;
           const byte val =
             /*
               IS_ANALOG(pin)
-                ? analogRead(pin - analogInputToDigitalPin(0)) : // int16_t val
+                ? analogRead(DIGITAL_PIN_TO_ANALOG_PIN(pin)) : // int16_t val
                 :
             //*/
               digitalRead(pin);
@@ -6883,7 +6863,7 @@ inline void gcode_M42() {
 
     // Report current state of selected pin(s)
     for (uint8_t pin = first_pin; pin <= last_pin; pin++)
-      report_pin_state_extended(pin, ignore_protection, true);
+      if (VALID_PIN(pin)) report_pin_state_extended(pin, ignore_protection, true);
   }
 
 #endif // PINS_DEBUGGING
@@ -8431,7 +8411,7 @@ inline void gcode_M205() {
    *
    * *** @thinkyhead: I recommend deprecating M206 for SCARA in favor of M665.
    * ***              M206 for SCARA will remain enabled in 1.1.x for compatibility.
-   * ***              In the next 1.2 release, it will simply be disabled by default.
+   * ***              In the 2.0 release, it will simply be disabled by default.
    */
   inline void gcode_M206() {
     LOOP_XYZ(i)
@@ -10875,6 +10855,7 @@ void process_next_command() {
         gcode_M140();
         break;
 
+
       case 105: // M105: Report current temperature
         gcode_M105();
         KEEPALIVE_STATE(NOT_BUSY);
@@ -11609,7 +11590,7 @@ void ok_to_send() {
     delta_diagonal_rod_2_tower[C_AXIS] = sq(diagonal_rod + drt[C_AXIS]);
   }
 
-  #if ENABLED(DELTA_FAST_SQRT)
+  #if ENABLED(DELTA_FAST_SQRT) && defined(ARDUINO_ARCH_AVR)
     /**
      * Fast inverse sqrt from Quake III Arena
      * See: https://en.wikipedia.org/wiki/Fast_inverse_square_root
@@ -13112,17 +13093,22 @@ void setup() {
   #endif
 
   MYSERIAL.begin(BAUDRATE);
+  while(!MYSERIAL);
   SERIAL_PROTOCOLLNPGM("start");
   SERIAL_ECHO_START();
 
   // Check startup - does nothing if bootloader sets MCUSR to 0
-  byte mcu = MCUSR;
+  byte mcu = HAL_get_reset_source();
   if (mcu &  1) SERIAL_ECHOLNPGM(MSG_POWERUP);
   if (mcu &  2) SERIAL_ECHOLNPGM(MSG_EXTERNAL_RESET);
   if (mcu &  4) SERIAL_ECHOLNPGM(MSG_BROWNOUT_RESET);
   if (mcu &  8) SERIAL_ECHOLNPGM(MSG_WATCHDOG_RESET);
   if (mcu & 32) SERIAL_ECHOLNPGM(MSG_SOFTWARE_RESET);
-  MCUSR = 0;
+  HAL_clear_reset_source();
+
+  #if ENABLED(USE_WATCHDOG) //reinit watchdog after HAL_get_reset_source call
+    watchdog_init();
+  #endif
 
   SERIAL_ECHOPGM(MSG_MARLIN);
   SERIAL_CHAR(' ');
@@ -13159,10 +13145,6 @@ void setup() {
   SYNC_PLAN_POSITION_KINEMATIC();
 
   thermalManager.init();    // Initialize temperature loop
-
-  #if ENABLED(USE_WATCHDOG)
-    watchdog_init();
-  #endif
 
   stepper.init();    // Initialize stepper, this enables interrupts!
   servo_init();
@@ -13359,4 +13341,3 @@ void loop() {
   endstops.report_state();
   idle();
 }
-

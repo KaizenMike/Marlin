@@ -184,6 +184,7 @@ uint16_t max_display_update_time = 0;
     void menu_action_setting_edit_callback_ ## _name(const char * const pstr, _type * const ptr, const _type minValue, const _type maxValue, const screenFunc_t callback, const bool live=false); \
     typedef void _name##_void
 
+  DECLARE_MENU_EDIT_TYPE(uint32_t, long5);
   DECLARE_MENU_EDIT_TYPE(int16_t, int3);
   DECLARE_MENU_EDIT_TYPE(uint8_t, int8);
   DECLARE_MENU_EDIT_TYPE(float, float3);
@@ -193,7 +194,6 @@ uint16_t max_display_update_time = 0;
   DECLARE_MENU_EDIT_TYPE(float, float51);
   DECLARE_MENU_EDIT_TYPE(float, float52);
   DECLARE_MENU_EDIT_TYPE(float, float62);
-  DECLARE_MENU_EDIT_TYPE(uint32_t, long5);
 
   void menu_action_setting_edit_bool(const char* pstr, bool* ptr);
   void menu_action_setting_edit_callback_bool(const char* pstr, bool* ptr, screenFunc_t callbackFunc);
@@ -2851,7 +2851,7 @@ void kill_screen(const char* lcd_msg) {
     MENU_ITEM(submenu, MSG_FILAMENT, lcd_control_filament_menu);
 
     #if HAS_LCD_CONTRAST
-      MENU_ITEM_EDIT_CALLBACK(int3, MSG_CONTRAST, (int*)&lcd_contrast, LCD_CONTRAST_MIN, LCD_CONTRAST_MAX, lcd_callback_set_contrast, true);
+      MENU_ITEM_EDIT_CALLBACK(int3, MSG_CONTRAST, (int16_t*)&lcd_contrast, LCD_CONTRAST_MIN, LCD_CONTRAST_MAX, lcd_callback_set_contrast, true);
     #endif
     #if ENABLED(FWRETRACT)
       MENU_ITEM(submenu, MSG_RETRACT, lcd_control_retract_menu);
@@ -3420,7 +3420,7 @@ void kill_screen(const char* lcd_msg) {
     void lcd_sdcard_menu() {
       ENCODER_DIRECTION_MENUS();
       if (!lcdDrawUpdate && !lcd_clicked) return; // nothing to do (so don't thrash the SD card)
-      const uint16_t fileCnt = card.getnrfilenames();
+      const uint16_t fileCnt = card.get_num_Files();
       START_MENU();
       MENU_BACK(MSG_MAIN);
       card.getWorkDirName();
@@ -3433,27 +3433,29 @@ void kill_screen(const char* lcd_msg) {
         MENU_ITEM(function, LCD_STR_FOLDER "..", lcd_sd_updir);
       }
 
-      for (uint16_t i = 0; i < fileCnt; i++) {
-        if (_menuLineNr == _thisItemNr) {
-          const uint16_t nr =
-            #if ENABLED(SDCARD_RATHERRECENTFIRST) && DISABLED(SDCARD_SORT_ALPHA)
-              fileCnt - 1 -
+      if (fileCnt) {
+        for (uint16_t i = 0; i < fileCnt; i++) {
+          if (_menuLineNr == _thisItemNr) {
+            const uint16_t nr =
+              #if ENABLED(SDCARD_RATHERRECENTFIRST) && DISABLED(SDCARD_SORT_ALPHA)
+                fileCnt - 1 -
+              #endif
+            i;
+
+            #if ENABLED(SDCARD_SORT_ALPHA)
+              card.getfilename_sorted(nr);
+            #else
+              card.getfilename(nr);
             #endif
-          i;
 
-          #if ENABLED(SDCARD_SORT_ALPHA)
-            card.getfilename_sorted(nr);
-          #else
-            card.getfilename(nr);
-          #endif
-
-          if (card.filenameIsDir)
-            MENU_ITEM(sddirectory, MSG_CARD_MENU, card.filename, card.longFilename);
-          else
-            MENU_ITEM(sdfile, MSG_CARD_MENU, card.filename, card.longFilename);
-        }
-        else {
-          MENU_ITEM_DUMMY();
+            if (card.filenameIsDir)
+              MENU_ITEM(sddirectory, MSG_CARD_MENU, card.filename, card.longFilename);
+            else
+              MENU_ITEM(sdfile, MSG_CARD_MENU, card.filename, card.longFilename);
+          }
+          else {
+            MENU_ITEM_DUMMY();
+          }
         }
       }
       END_MENU();
@@ -3952,6 +3954,7 @@ void kill_screen(const char* lcd_msg) {
     } \
     typedef void _name
 
+  DEFINE_MENU_EDIT_TYPE(uint32_t, long5, ftostr5rj, 0.01);
   DEFINE_MENU_EDIT_TYPE(int16_t, int3, itostr3, 1);
   DEFINE_MENU_EDIT_TYPE(uint8_t, int8, i8tostr3, 1);
   DEFINE_MENU_EDIT_TYPE(float, float3, ftostr3, 1.0);
@@ -3961,7 +3964,6 @@ void kill_screen(const char* lcd_msg) {
   DEFINE_MENU_EDIT_TYPE(float, float51, ftostr51sign, 10.0);
   DEFINE_MENU_EDIT_TYPE(float, float52, ftostr52sign, 100.0);
   DEFINE_MENU_EDIT_TYPE(float, float62, ftostr62rj, 100.0);
-  DEFINE_MENU_EDIT_TYPE(uint32_t, long5, ftostr5rj, 0.01);
 
   /**
    *
