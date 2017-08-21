@@ -76,7 +76,7 @@
 // build by the user have been successfully uploaded into firmware.
 #define STRING_CONFIG_H_AUTHOR "(KaizenMike, DeltaDev)" // Who made the changes.
 #define SHOW_BOOTSCREEN
-#define STRING_SPLASH_LINE1 SHORT_BUILD_VERSION // will be shown during bootup in line 1
+#define STRING_SPLASH_LINE1 STRING_CONFIG_H_AUTHOR //SHORT_BUILD_VERSION // will be shown during bootup in line 1
 #define STRING_SPLASH_LINE2 WEBSITE_URL         // will be shown during bootup in line 2
 
 //
@@ -310,11 +310,11 @@
 // When temperature exceeds max temp, your heater will be switched off.
 // This feature exists to protect your hotend from overheating accidentally, but *NOT* from thermistor short/failure!
 // You should use MINTEMP for thermistor short/failure protection.
-#define HEATER_0_MAXTEMP 250
-#define HEATER_1_MAXTEMP 250
-#define HEATER_2_MAXTEMP 250
-#define HEATER_3_MAXTEMP 250
-#define HEATER_4_MAXTEMP 250
+#define HEATER_0_MAXTEMP 280
+#define HEATER_1_MAXTEMP 280
+#define HEATER_2_MAXTEMP 280
+#define HEATER_3_MAXTEMP 280
+#define HEATER_4_MAXTEMP 280
 #define BED_MAXTEMP 120
 
 //===========================================================================
@@ -503,7 +503,7 @@
 #define DELTA_DIAGONAL_ROD 205.0 // mm
 
 // height from z=0 to home position
-#define DELTA_HEIGHT 188.99 // get this value from auto calibrate
+#define DELTA_HEIGHT 185.62 // get this value from auto calibrate
 
 #define DELTA_ENDSTOP_ADJ \
   {                       \
@@ -598,7 +598,7 @@
  */
 #define DEFAULT_AXIS_STEPS_PER_UNIT \
   {                                 \
-    100, 100, 100, 760 * 1.1        \
+    100, 100, 100, 728              \
   } // default steps per unit for Kossel (GT2, 20 tooth)
 
 /**
@@ -761,7 +761,7 @@
  */
 #define X_PROBE_OFFSET_FROM_EXTRUDER 19.919    // X offset: -left  +right  [of the nozzle]
 #define Y_PROBE_OFFSET_FROM_EXTRUDER 11.5  // Y offset: -front +behind [the nozzle]
-#define Z_PROBE_OFFSET_FROM_EXTRUDER -1.4 // Z offset: -below +above  [the nozzle]
+#define Z_PROBE_OFFSET_FROM_EXTRUDER -1.8 // Z offset: -below +above  [the nozzle]
 
 // X and Y axis travel speed (mm/m) between probes
 #define XY_PROBE_SPEED 4000
