@@ -76,7 +76,7 @@
 // build by the user have been successfully uploaded into firmware.
 #define STRING_CONFIG_H_AUTHOR "(KaizenMike, DeltaDev)" // Who made the changes.
 #define SHOW_BOOTSCREEN
-#define STRING_SPLASH_LINE1 STRING_CONFIG_H_AUTHOR //SHORT_BUILD_VERSION // will be shown during bootup in line 1
+#define STRING_SPLASH_LINE1 "KaizenMike, DeltaDev" //SHORT_BUILD_VERSION // will be shown during bootup in line 1
 #define STRING_SPLASH_LINE2 WEBSITE_URL         // will be shown during bootup in line 2
 
 //
@@ -127,7 +127,7 @@
 
 // Define this to set a unique identifier for this printer, (Used by some programs to differentiate between machines)
 // You can use an online service to generate a random UUID. (eg http://www.uuidgenerator.net/version4)
-//#define MACHINE_UUID "3d3bea69-ae1c-438c-99ac-2ca56a2aa348"
+#define MACHINE_UUID "3d3bea69-ae1c-438c-99ac-2ca56a2aa348"
 
 // @section extruder
 
@@ -288,7 +288,7 @@
 #define MAX_REDUNDANT_TEMP_SENSOR_DIFF 10
 
 // Extruder temperature must be close to target for this long before M109 returns success
-#define TEMP_RESIDENCY_TIME 10 // (seconds)
+#define TEMP_RESIDENCY_TIME 4 // (seconds)
 #define TEMP_HYSTERESIS 3      // (degC) range of +/- temperatures considered "close" to the target one
 #define TEMP_WINDOW 1          // (degC) Window around target to start the residency timer x degC early.
 
@@ -486,7 +486,7 @@
 
 #if ENABLED(DELTA_AUTO_CALIBRATION)
 // set the default number of probe points : n*n (1 -> 7)
-#define DELTA_CALIBRATION_DEFAULT_POINTS 4
+#define DELTA_CALIBRATION_DEFAULT_POINTS 7
 #endif
 
 // Print surface diameter/2 minus unreachable space (avoid collisions with vertical towers).
@@ -503,11 +503,11 @@
 #define DELTA_DIAGONAL_ROD 205.0 // mm
 
 // height from z=0 to home position
-#define DELTA_HEIGHT 185.62 // get this value from auto calibrate
+#define DELTA_HEIGHT 200.0 // get this value from auto calibrate
 
 #define DELTA_ENDSTOP_ADJ \
   {                       \
-    0.0, -1.187, -0.067   \
+    0.0, -1.187, -0.067         \
   } // get these from auto calibrate
 
 // Horizontal distance bridged by diagonal push rods when effector is centered.
@@ -608,7 +608,7 @@
  */
 #define DEFAULT_MAX_FEEDRATE \
   {                          \
-    500, 500, 500, 25        \
+    1000, 1000, 1000, 25     \
   }
 
 /**
@@ -645,7 +645,7 @@
 #define DEFAULT_XJERK 20.0
 #define DEFAULT_YJERK 20.0
 #define DEFAULT_ZJERK 20.0 // Must be same as XY for delta
-#define DEFAULT_EJERK 5.0
+#define DEFAULT_EJERK 1.0
 
 //===========================================================================
 //============================= Z Probe Options =============================
@@ -727,7 +727,7 @@
  */
 //#define PROBING_HEATERS_OFF       // Turn heaters off when probing
 //#define PROBING_FANS_OFF          // Turn fans off when probing
-//#define DELAY_BEFORE_PROBING 200  // (ms) To prevent vibrations from triggering piezo sensors
+#define DELAY_BEFORE_PROBING 200  // (ms) To prevent vibrations from triggering piezo sensors
 
 // A probe that is deployed and stowed with a solenoid pin (SOL1_PIN)
 //#define SOLENOID_PROBE
@@ -759,18 +759,18 @@
  *      O-- FRONT --+
  *    (0,0)
  */
-#define X_PROBE_OFFSET_FROM_EXTRUDER 19.919    // X offset: -left  +right  [of the nozzle]
-#define Y_PROBE_OFFSET_FROM_EXTRUDER 11.5  // Y offset: -front +behind [the nozzle]
-#define Z_PROBE_OFFSET_FROM_EXTRUDER -1.8 // Z offset: -below +above  [the nozzle]
+#define X_PROBE_OFFSET_FROM_EXTRUDER 19   // X offset: -left  +right  [of the nozzle]
+#define Y_PROBE_OFFSET_FROM_EXTRUDER 12  // Y offset: -front +behind [the nozzle]
+#define Z_PROBE_OFFSET_FROM_EXTRUDER -1.7 // Z offset: -below +above  [the nozzle]
 
 // X and Y axis travel speed (mm/m) between probes
-#define XY_PROBE_SPEED 4000
+#define XY_PROBE_SPEED 3000
 
 // Speed for the first approach when double-probing (with PROBE_DOUBLE_TOUCH)
 #define Z_PROBE_SPEED_FAST HOMING_FEEDRATE_Z
 
 // Speed for the "accurate" probe of each point
-#define Z_PROBE_SPEED_SLOW (Z_PROBE_SPEED_FAST / 4)
+#define Z_PROBE_SPEED_SLOW (Z_PROBE_SPEED_FAST / 8)
 
 // Use double touch for probing
 #define PROBE_DOUBLE_TOUCH
@@ -836,8 +836,8 @@
  * Example: `M851 Z-5` with a CLEARANCE of 4  =>  9mm from bed to nozzle.
  *     But: `M851 Z+1` with a CLEARANCE of 2  =>  2mm from bed to nozzle.
  */
-#define Z_CLEARANCE_DEPLOY_PROBE 15  // Z Clearance for Deploy/Stow
-#define Z_CLEARANCE_BETWEEN_PROBES 5 // Z Clearance between probe points
+#define Z_CLEARANCE_DEPLOY_PROBE 5  // Z Clearance for Deploy/Stow
+#define Z_CLEARANCE_BETWEEN_PROBES 1 // Z Clearance between probe points
 
 // For M851 give a range for adjusting the Z probe offset
 #define Z_PROBE_OFFSET_RANGE_MIN -20
@@ -984,7 +984,7 @@
  * Turn on with the command 'M111 S32'.
  * NOTE: Requires a lot of PROGMEM!
  */
-//#define DEBUG_LEVELING_FEATURE
+#define DEBUG_LEVELING_FEATURE
 
 #if ENABLED(MESH_BED_LEVELING) || ENABLED(AUTO_BED_LEVELING_BILINEAR) || ENABLED(AUTO_BED_LEVELING_UBL)
 // Gradually reduce leveling correction until a set height is reached,
@@ -1001,7 +1001,7 @@
 
 // Set the number of grid points per dimension.
 // Works best with 5 or more points in each dimension.
-#define GRID_MAX_POINTS_X 9
+#define GRID_MAX_POINTS_X 5
 #define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X
 
 #define LEFT_PROBE_BED_POSITION -(DELTA_PROBEABLE_RADIUS)
@@ -1032,12 +1032,12 @@
 
 // 3 arbitrary points to probe.
 // A simple cross-product is used to estimate the plane of the bed.
-#define ABL_PROBE_PT_1_X 15
-#define ABL_PROBE_PT_1_Y 180
-#define ABL_PROBE_PT_2_X 15
-#define ABL_PROBE_PT_2_Y 20
-#define ABL_PROBE_PT_3_X 170
-#define ABL_PROBE_PT_3_Y 20
+#define ABL_PROBE_PT_1_X -150
+#define ABL_PROBE_PT_1_Y -150
+#define ABL_PROBE_PT_2_X 150
+#define ABL_PROBE_PT_2_Y 150
+#define ABL_PROBE_PT_3_X 0
+#define ABL_PROBE_PT_3_Y 180
 
 #elif ENABLED(AUTO_BED_LEVELING_UBL)
 
@@ -1045,8 +1045,8 @@
 //========================= Unified Bed Leveling ============================
 //===========================================================================
 
-#define UBL_MESH_INSET 1     // Mesh inset margin on print area
-#define GRID_MAX_POINTS_X 10 // Don't use more than 15 points per axis, implementation limited.
+#define UBL_MESH_INSET 10     // Mesh inset margin on print area
+#define GRID_MAX_POINTS_X 5  // Don't use more than 15 points per axis, implementation limited.
 #define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X
 
 #define _PX(R, A) (R) * cos(RADIANS(A))
@@ -1068,7 +1068,7 @@
 //===========================================================================
 
 #define MESH_INSET 10       // Mesh inset margin on print area
-#define GRID_MAX_POINTS_X 3 // Don't use more than 7 points per axis, implementation limited.
+#define GRID_MAX_POINTS_X 5 // Don't use more than 7 points per axis, implementation limited.
 #define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X
 
 //#define MESH_G28_REST_ORIGIN // After homing all axes ('G28' or 'G28 XYZ') rest Z at Z_MIN_POS
@@ -1147,7 +1147,7 @@
 // every couple of seconds when it can't accept commands.
 //
 #define HOST_KEEPALIVE_FEATURE        // Disable this if your host doesn't like keepalive messages
-#define DEFAULT_KEEPALIVE_INTERVAL 10 // Number of seconds between "busy" messages. Set with M113.
+#define DEFAULT_KEEPALIVE_INTERVAL 4  // Number of seconds between "busy" messages. Set with M113.
 #define BUSY_WHILE_HEATING            // Some hosts require "busy" messages even during heating
 
 //
@@ -1168,9 +1168,9 @@
 // @section temperature
 
 // Preheat Constants
-#define PREHEAT_1_TEMP_HOTEND 180
+#define PREHEAT_1_TEMP_HOTEND 200
 #define PREHEAT_1_TEMP_BED 70
-#define PREHEAT_1_FAN_SPEED 126 // Value from 0 to 255
+#define PREHEAT_1_FAN_SPEED 255 // Value from 0 to 255
 
 #define PREHEAT_2_TEMP_HOTEND 230
 #define PREHEAT_2_TEMP_BED 110
@@ -1294,7 +1294,7 @@
  *
  * View the current statistics with M78.
  */
-//#define PRINTCOUNTER
+#define PRINTCOUNTER
 
 //=============================================================================
 //============================= LCD and SD support ============================
@@ -1774,14 +1774,14 @@
  */
 //#define FILAMENT_WIDTH_SENSOR
 
-#define DEFAULT_NOMINAL_FILAMENT_DIA 3.00 // (mm) Diameter of the filament generally used (3.0 or 1.75mm), also used in the slicer. Used to validate sensor reading.
+#define DEFAULT_NOMINAL_FILAMENT_DIA 1.75 // (mm) Diameter of the filament generally used (3.0 or 1.75mm), also used in the slicer. Used to validate sensor reading.
 
 #if ENABLED(FILAMENT_WIDTH_SENSOR)
 #define FILAMENT_SENSOR_EXTRUDER_NUM 0 // Index of the extruder that has the filament sensor (0,1,2,3)
 #define MEASUREMENT_DELAY_CM 14        // (cm) The distance from the filament sensor to the melting chamber
 
-#define MEASURED_UPPER_LIMIT 3.30 // (mm) Upper limit used to validate sensor reading
-#define MEASURED_LOWER_LIMIT 1.90 // (mm) Lower limit used to validate sensor reading
+#define MEASURED_UPPER_LIMIT 1.9 // (mm) Upper limit used to validate sensor reading
+#define MEASURED_LOWER_LIMIT 1.6 // (mm) Lower limit used to validate sensor reading
 #define MAX_MEASUREMENT_DELAY 20  // (bytes) Buffer size for stored measurements (1 byte per cm). Must be larger than MEASUREMENT_DELAY_CM.
 
 #define DEFAULT_MEASURED_FILAMENT_DIA DEFAULT_NOMINAL_FILAMENT_DIA // Set measured to nominal initially
